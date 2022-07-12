@@ -1,0 +1,73 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+
+int main(){
+    int border_x,border_y;   cin>>border_x>>border_y;
+    int init_x = 0 , init_y = 0 , dir;   char init_dir,outpdir; 
+    string order;
+    while(cin>>init_x>>init_y>>init_dir){
+        bool lost_x = true,lost_y = true;
+        switch(init_dir){
+            case 'N': dir = 1; break;
+            case 'E': dir = 2; break;
+            case 'S': dir = 3; break;
+            case 'W': dir = 4; break;
+        }
+            cin>>order;
+            for(int i=0;i<order.length();i++){
+            if(lost_x==false&&lost_y==false) break;        
+            else if(order[i] != 'F'){
+                if(order[i] == 'R') dir++;
+                if(order[i] == 'L') dir+=3;
+            }
+            else{
+                if(dir%4 == 0 && lost_x == true){
+                    if(--init_x < border_x){
+                        lost_x = false;
+                        init_x++;
+                        continue;
+                    }
+                    else init_x--;
+                }
+                else if(dir%4 == 1 && lost_y ==true){
+                    if(++init_y > border_y){
+                        lost_y = false;
+                        init_y--;
+                        continue;
+                    }
+                    else init_y++;
+                }
+                else if(dir%4 == 2 && lost_x ==true){
+                    if(++init_x > border_x){
+                        lost_x = false;
+                        init_x--;
+                        continue;
+                    }
+                    else init_x++;
+                }
+                else if(dir%4 == 3 && lost_y ==true){
+                    if(--init_y < border_y){
+                        lost_y = false;
+                        init_y++;
+                        continue;
+                    }
+                    else init_y--;
+                }
+            }
+          }  
+        
+        if(dir%4==0) outpdir = 'W';
+        if(dir%4==1) outpdir = 'N';
+        if(dir%4==2) outpdir = 'E';
+        if(dir%4==3) outpdir = 'S';
+
+        if(lost_x==false&&lost_y==false) cout<<init_x<<" "<<init_y<<" "<<outpdir<<" "<<"LOST"<<endl;
+        else cout<<init_x<<" "<<init_y<<" "<<outpdir<<endl;
+
+    }
+
+    return 0;
+
+}

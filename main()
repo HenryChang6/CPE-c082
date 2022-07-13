@@ -5,69 +5,66 @@ using namespace std;
 
 int main(){
     int border_x,border_y;   cin>>border_x>>border_y;
-    int init_x = 0 , init_y = 0 , dir;   char init_dir,outpdir; 
+    int init_x = 0 , init_y = 0 , dir;   
+    char init_dir , outpdir; 
     string order;
     while(cin>>init_x>>init_y>>init_dir){
-        bool lost_x = true,lost_y = true;
+        bool lost = false;
         switch(init_dir){
-            case 'N': dir = 1; break;
-            case 'E': dir = 2; break;
-            case 'S': dir = 3; break;
-            case 'W': dir = 4; break;
+            case 'N': dir = 0; break;
+            case 'E': dir = 1; break;
+            case 'S': dir = 2; break;
+            case 'W': dir = 3; break;
         }
-            cin>>order;
-            for(int i=0;i<order.length();i++){
-            if(lost_x==false&&lost_y==false) break;        
-            else if(order[i] != 'F'){
-                if(order[i] == 'R') dir++;
-                if(order[i] == 'L') dir+=3;
+        cin>>order;
+        for(int i=0;i<order.length();i++){       
+        if(order[i] != 'F' && !lost){
+            if(order[i] == 'R') dir = (dir++)%4;
+            if(order[i] == 'L') dir = (dir++)%4;
+        }
+        else{
+        if(dir == 0 && !lost){
+            if(++init_y > border_y){
+                lost = true;
+                init_y--;
+                break;
             }
-            else{
-                if(dir%4 == 0 && lost_x == true){
-                    if(--init_x < border_x){
-                        lost_x = false;
-                        init_x++;
-                        continue;
-                    }
-                    else init_x--;
-                }
-                else if(dir%4 == 1 && lost_y ==true){
-                    if(++init_y > border_y){
-                        lost_y = false;
-                        init_y--;
-                        continue;
-                    }
-                    else init_y++;
-                }
-                else if(dir%4 == 2 && lost_x ==true){
-                    if(++init_x > border_x){
-                        lost_x = false;
-                        init_x--;
-                        continue;
-                    }
-                    else init_x++;
-                }
-                else if(dir%4 == 3 && lost_y ==true){
-                    if(--init_y < border_y){
-                        lost_y = false;
-                        init_y++;
-                        continue;
-                    }
-                    else init_y--;
-                }
+            else init_y++;
+        }
+        else if(dir == 1 && !lost){
+            if(++init_x > border_x){
+                lost = true;
+                init_x--;
+                break;
             }
-          }  
+            else init_x++;
+        }
+        else if(dir == 2 && !lost){
+            if(--init_y < border_y){
+                lost = true;
+                init_y++;
+                break;
+            }
+            else init_y--;
+        }
+        else if(dir == 3 && !lost){
+            if(--init_x < border_x){
+                lost = true;
+                init_x++;
+                break;
+            }
+            else init_x--;
+        }
         
-        if(dir%4==0) outpdir = 'W';
-        if(dir%4==1) outpdir = 'N';
-        if(dir%4==2) outpdir = 'E';
-        if(dir%4==3) outpdir = 'S';
-
-        if(lost_x==false&&lost_y==false) cout<<init_x<<" "<<init_y<<" "<<outpdir<<" "<<"LOST"<<endl;
-        else cout<<init_x<<" "<<init_y<<" "<<outpdir<<endl;
-
     }
+}  
+        if(dir == 0) outpdir = 'N';
+        if(dir == 1) outpdir = 'E';
+        if(dir == 2) outpdir = 'S';
+        if(dir == 3) outpdir = 'W';
 
+        if(lost) cout<<init_x<<" "<<init_y<<" "<<outpdir<<" "<<"LOST"<<endl;
+        else cout<<init_x<<" "<<init_y<<" "<<outpdir<<endl;
+    }
     return 0;
-
 }
